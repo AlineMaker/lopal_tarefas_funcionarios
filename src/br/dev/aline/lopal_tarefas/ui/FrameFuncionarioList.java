@@ -1,5 +1,6 @@
 package br.dev.aline.lopal_tarefas.ui;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -20,110 +21,107 @@ import br.dev.aline.lopal_tarefas.model.Funcionario;
 
 public class FrameFuncionarioList {
 
-private JLabel labelTitulo;
-private JButton btnCadastro;
-private JButton btnSair;
-private JTable tabelaFuncionarios;
-private JScrollPane scrollFuncionarios;
-private DefaultTableModel modelFuncionarios;
-private String[] colunas = { "CÓDIGO", "NOME", "CARGO" };
+	private JLabel labelTitulo;
+	private JButton btnCadastro;
+	private JTable tabelaFuncionarios;
+	private JScrollPane scrollFuncionarios;
+	private DefaultTableModel modelFuncionarios;
+	private String[] colunas = { "CÓDIGO", "NOME", "CARGO" };
+	private JButton btnSair;
 
-public FrameFuncionarioList(JFrame jf) {
-criarTela(jf);
-}
+	public FrameFuncionarioList(JFrame gerenciador) {
+		criarTela(gerenciador);
+	}
 
-public void criarTela(JFrame jf) {
-// Criando o objeto da Tela
-JDialog tela = new JDialog(jf, true);
-tela.setSize(500, 500);
-tela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-tela.setLayout(null);
-tela.setLocationRelativeTo(null);
-tela.setTitle("Lista de Funcionários");
-tela.setResizable(false);
+	// ja mudei para jdialog
+	private void criarTela(JFrame gerenciador) {
+		JDialog tela = new JDialog(gerenciador, true);
+		tela.setSize(500, 500);
+		tela.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		tela.setLayout(null);
+		tela.setLocationRelativeTo(gerenciador);
+		tela.setTitle("Lista de funcionários");
+		tela.setResizable(false);
 
-// Manipulando a Label Título
-labelTitulo = new JLabel("Cadastro de Funcionários");
-labelTitulo.setFont(new Font("Arial", Font.BOLD, 24));
-labelTitulo.setBounds(10, 10, 400, 40);
+		Container painel = tela.getContentPane();
 
-// Criação da Tabela
+		labelTitulo = new JLabel("Cadastro de funcionários");
+		labelTitulo.setFont(new Font("Arial", Font.BOLD, 24));
+		labelTitulo.setForeground(Color.BLUE);
+		labelTitulo.setBounds(10, 10, 300, 40);
 
-// Criando model
-modelFuncionarios = new DefaultTableModel(colunas, 20) {
-@Override
-public boolean isCellEditable(int row, int column) {
-return false;
-}
-};
+		// Criação da tabela
+		modelFuncionarios = new DefaultTableModel(colunas, 5) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
 
-// Criando Tabela
-tabelaFuncionarios = new JTable(modelFuncionarios);
-tabelaFuncionarios.getTableHeader().setReorderingAllowed(false);
+		tabelaFuncionarios = new JTable(modelFuncionarios);
 
-// Criando Scroll e adicionando a tabela nele
-scrollFuncionarios = new JScrollPane(tabelaFuncionarios);
-scrollFuncionarios.setBounds(10, 50, 460, 343);
+		tabelaFuncionarios.getTableHeader().setReorderingAllowed(false);
+		scrollFuncionarios = new JScrollPane(tabelaFuncionarios);
+		scrollFuncionarios.setBounds(10, 60, 460, 300);
 
-// Puxando dados do DB
-carregarDados();
+		carregarDados();
 
-// Ajustando o Botão
-btnCadastro = new JButton("Cadastrar");
-btnCadastro.setBounds(10, 410, 200, 40);
+		btnCadastro = new JButton("Cadastrar");
+		btnCadastro.setBounds(10, 380, 200, 40);
 
-btnCadastro.addActionListener(new ActionListener() {
+		btnCadastro.addActionListener(new ActionListener() {
 
-@Override
-public void actionPerformed(ActionEvent e) {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 
-new FrameFuncionario(tela);
-carregarDados();
-}
-});
+				new FrameFuncionario(tela);
+				carregarDados();
 
-btnSair = new JButton("Sair");
-btnSair.setBounds(220, 410, 100, 40);
+			}
+		});
 
-btnSair.addActionListener(new ActionListener() {
+		btnSair = new JButton("Sair");
+		btnSair.setBounds(220, 380, 80, 40);
 
-@Override
-public void actionPerformed(ActionEvent e) {
-// TODO Auto-generated method stub
-int resposta = JOptionPane.showConfirmDialog(tela, "Você tem certeza que deseja sair?");
+		btnSair.addActionListener(new ActionListener() {
 
-if (resposta == 0) {
-tela.dispose();
-}
-}
-});
+			@Override
+			public void actionPerformed(ActionEvent e) {
 
-// Criando variável do container da tela
-Container painel = tela.getContentPane();
-// Adicionando componentes no container
-painel.add(labelTitulo);
-painel.add(scrollFuncionarios);
-painel.add(btnCadastro);
-painel.add(btnSair);
+				int resposta = JOptionPane.showConfirmDialog(null, "Deseja continuar?", "Confirmação",
+						JOptionPane.YES_NO_OPTION);
+				if (resposta == 0) {
+					tela.dispose();
 
-// "Setando" visibilidade da tela
-tela.setVisible(true);
-}
+				}
 
-private void carregarDados() {
-FuncionarioDAO dao = new FuncionarioDAO();
-List<Funcionario> funcionarios = dao.listar();
+			}
+		});
 
-Object[][] dados = new Object[funcionarios.size()][3];
-int i = 0;
-for(Funcionario f : funcionarios) {
-dados[i][0] = f.getMatricula();
-dados[i][1] = f.getNome();
-dados[i][2] = f.getCargo();
-i++;
-}
+		painel.add(labelTitulo);
+		painel.add(scrollFuncionarios);
+		painel.add(btnCadastro);
+		painel.add(btnSair);
 
-modelFuncionarios.setDataVector(dados, colunas);
-}
+		tela.setVisible(true);
+
+	}
+
+	private void carregarDados() {
+		FuncionarioDAO dao = new FuncionarioDAO();
+		List<Funcionario> funcionarios = dao.listar();
+
+		Object[][] dados = new Object[funcionarios.size()][3];
+
+		int i = 0;
+		for (Funcionario f : funcionarios) {
+			dados[i][0] = f.getMatricula();
+			dados[i][1] = f.getNome();
+			dados[i][2] = f.getCargo();
+			i++;
+		}
+
+		modelFuncionarios.setDataVector(dados, colunas);
+	}
 
 }

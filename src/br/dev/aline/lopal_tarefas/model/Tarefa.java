@@ -2,99 +2,84 @@ package br.dev.aline.lopal_tarefas.model;
 
 	import java.time.LocalDate;
 
-	import br.dev.aline.lopal_tarefas.utils.Utils;
+	import java.util.List;
 
 	public class Tarefa {
-	private String tituloTarefa;
-	private String descricaoTarefa;
-	private String dataInicial;
-	private int prazoTarefa;
-	private String dataConclusao;
-	private String statusTarefa;
-	private String responsavelTarefa;
-	private String codigo;
 
-	public Tarefa() {
+		private String titulo;
+		private String codigo;
+		private String descricao;
+		private LocalDate data;
+		private int prazo;
+		private List<Status> status;
+		private String responsavel;
 
-	}
+		public String getTitulo() {
+			return titulo;
+		}
 
-	public Tarefa(String tituloTarefa, String descricaoTarefa, LocalDate dataInicial, int prazoTarefa, String statusTarefa, String responsavelTarefa) {
-	this.tituloTarefa = tituloTarefa;
-	this.descricaoTarefa = descricaoTarefa;
-	this.dataInicial = dataInicial.toString();
-	this.prazoTarefa = prazoTarefa;
-	this.statusTarefa = statusTarefa;
-	this.responsavelTarefa = responsavelTarefa;
-	this.codigo = Utils.gerarUUID8();
-	this.dataConclusao = dataInicial.plusDays(prazoTarefa).toString();
-	}
+		public void setTitulo(String titulo) {
+			this.titulo = titulo;
+		}
 
-	public String getCodigo() {
-	return codigo;
-	}
+		public String getCodigo() {
+			return codigo;
+		}
 
-	public String getTituloTarefa() {
-	return tituloTarefa;
-	}
+		public void setCodigo(String codigo) {
+			this.codigo = codigo;
+		}
 
-	public void setTituloTarefa(String tituloTarefa) {
-	this.tituloTarefa = tituloTarefa;
-	}
+		public String getDescricao() {
+			return descricao;
+		}
 
-	public String getDescricaoTarefa() {
-	return descricaoTarefa;
-	}
+		public void setDescricao(String descricao) {
+			this.descricao = descricao;
+		}
 
-	public void setDescricaoTarefa(String descricaoTarefa) {
-	this.descricaoTarefa = descricaoTarefa;
-	}
+		public LocalDate getData() {
+			return data;
+		}
 
-	public String getDataInicial() {
-	return dataInicial;
-	}
+		public void setData(LocalDate data) {
+			this.data = data;
+		}
 
-	public void setDataInicial(String dataInicial) {
-	this.dataInicial = dataInicial;
-	}
+		public int getPrazo() {
+			return prazo;
+		}
 
-	public int getPrazoTarefa() {
-	return prazoTarefa;
-	}
+		public void setPrazo(int prazo) {
+			this.prazo = prazo;
+		}
 
-	public void setPrazoTarefa(int prazoTarefa) {
-	this.prazoTarefa = prazoTarefa;
-	}
+		public LocalDate conclusao() {
+			LocalDate entrega = data;
+			return entrega.plusDays(prazo);
+		}
 
-	public String getDataConclusao() {
-	return dataConclusao;
-	}
+		public List<Status> getStatus() {
+			return status;
+		}
 
-	public void setDataConclusao(String dataConclusao) {
-	this.dataConclusao = dataConclusao;
-	}
+		public void setStatus(List<Status> status) {
+			this.status = status;
+		}
 
-	public String getStatusTarefa() {
-	return statusTarefa;
-	}
+		public String getResponsavel() {
+			return responsavel;
+		}
 
-	public void setStatusTarefa(String statusTarefa) {
-	this.statusTarefa = statusTarefa;
-	}
+		public void setResponsavel(String responsavel) {
+			this.responsavel = responsavel;
+		}
 
-	public String getResponsavelTarefa() {
-	return responsavelTarefa;
-	}
-
-	public void setResponsavelTarefa(String responsavelTarefa) {
-	this.responsavelTarefa = responsavelTarefa;
-	}
-
-	@Override
-	public String toString() {
-	String tarefa = tituloTarefa + "," + descricaoTarefa + "," + dataInicial + "," + prazoTarefa + "," + dataConclusao + "," + statusTarefa + "," + responsavelTarefa + "," + codigo;
-	return tarefa;
-	}
+		@Override
+		public String toString() {
+			String tarefa = codigo + "," + titulo + "," + descricao + "," + data + "," + prazo + "," + conclusao() + ","
+					+ status + "," + responsavel + "\n";
+			return tarefa;
+		}
 
 	}
-
-

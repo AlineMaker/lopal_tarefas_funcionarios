@@ -1,6 +1,5 @@
 package br.dev.aline.lopal_tarefas.dao;
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,14 +8,14 @@ import java.util.List;
 import br.dev.aline.lopal_tarefas.factory.FileFactory;
 import br.dev.aline.lopal_tarefas.model.Tarefa;
 
-public class tarefasDAO {
+public class TarefasDAO {
 
 	private Tarefa tarefa;
 
-	public tarefasDAO() {
+	public TarefasDAO() {
 	}
 
-	public tarefasDAO(Tarefa tarefa) {
+	public TarefasDAO(Tarefa tarefa) {
 		this.tarefa = tarefa;
 	}
 

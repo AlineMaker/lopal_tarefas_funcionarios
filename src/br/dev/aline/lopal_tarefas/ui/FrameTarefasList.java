@@ -103,7 +103,7 @@ package br.dev.aline.lopal_tarefas.ui;
 		}
 
 		private void carregarDados() {
-			tarefasDAO dao = new tarefasDAO();
+			TarefasDAO dao = new TarefasDAO();
 			List<Tarefa> tarefas = dao.listar();
 
 			Object[][] dados = new Object[tarefas.size()][3];

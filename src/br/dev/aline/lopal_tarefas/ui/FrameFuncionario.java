@@ -16,124 +16,112 @@ import br.dev.aline.lopal_tarefas.model.Funcionario;
 
 public class FrameFuncionario {
 
-private JLabel labelMatricula;
-private JLabel labelNome;
-private JLabel labelCargo;
-private JLabel labelSalario;
-private JTextField txtMatricula;
-private JTextField txtNome;
-private JTextField txtCargo;
-private JTextField txtSalario;
-private JButton btnSalvar;
-private JButton btnSair;
+	private JLabel labelMatricula;
+	private JLabel labelNome;
+	private JLabel labelCargo;
+	private JLabel labelSalario;
+	private JTextField txtMatricula;
+	private JTextField txtNome;
+	private JTextField txtCargo;
+	private JTextField txtSalario;
+	private JButton btnSalvar;
+	private JButton btnSair;
 
-public FrameFuncionario(JDialog jd) {
-criarTela(jd);
+	public FrameFuncionario(JDialog cadastro) {
+		criarTela(cadastro);
+	}
 
-}
+	private void criarTela(JDialog cadastro)
 
-private void criarTela(JDialog jd) {
-JDialog tela = new JDialog(jd, true);
-tela.setTitle("Cadastro");
-tela.setSize(400, 400);
-tela.setResizable(false);
-tela.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-tela.setLayout(null);
-tela.setLocationRelativeTo(jd);
+	{
+		JDialog tela = new JDialog(cadastro, true);
+		tela.setTitle("Cadastro");
+		tela.setSize(400, 400);
+		tela.setResizable(false);
+		tela.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		tela.setLayout(null);
+		tela.setLocationRelativeTo(cadastro);
 
-Container painel = tela.getContentPane();
+		Container painel = tela.getContentPane();
 
-//Matricula
-labelMatricula = new JLabel("Matrícula:");
-labelMatricula.setBounds(10, 10, 200, 30);
+		labelMatricula = new JLabel("Matrícula:");
+		labelMatricula.setBounds(10, 10, 200, 30);
+		txtMatricula = new JTextField();
+		txtMatricula.setBounds(10, 40, 150, 30);
+		txtMatricula.setEnabled(false);
 
-txtMatricula = new JTextField();
-txtMatricula.setBounds(10, 40, 150, 30);
-txtMatricula.setEnabled(false);
+		labelNome = new JLabel("Nome:");
+		labelNome.setBounds(10, 75, 200, 30);
+		txtNome = new JTextField();
+		txtNome.setBounds(10, 105, 370, 30);
 
-//Nome
-labelNome = new JLabel("Nome:");
-labelNome.setBounds(10, 75, 200, 30);
+		labelCargo = new JLabel("Cargo:");
+		labelCargo.setBounds(10, 140, 200, 30);
+		txtCargo = new JTextField();
+		txtCargo.setBounds(10, 170, 300, 30);
 
-txtNome = new JTextField();
-txtNome.setBounds(10, 105, 365, 30);
+		labelSalario = new JLabel("Salário");
+		labelSalario.setBounds(10, 205, 150, 30);
+		txtSalario = new JTextField();
+		txtSalario.setBounds(10, 235, 150, 30);
 
-//Cargo
-labelCargo = new JLabel("Cargo:");
-labelCargo.setBounds(10, 140, 200, 30);
+		btnSalvar = new JButton("Salvar");
+		btnSalvar.setBounds(10, 300, 120, 50);
 
-txtCargo = new JTextField();
-txtCargo.setBounds(10, 170, 300, 30);
+		btnSair = new JButton("Sair");
+		btnSair.setBounds(140, 300, 80, 50);
 
-//Salário
-labelSalario = new JLabel("Salário:");
-labelSalario.setBounds(10, 205, 150, 30);
+		painel.add(labelMatricula);
+		painel.add(txtMatricula);
+		painel.add(labelNome);
+		painel.add(txtNome);
+		painel.add(labelCargo);
+		painel.add(txtCargo);
+		painel.add(labelSalario);
+		painel.add(txtSalario);
+		painel.add(btnSalvar);
+		painel.add(btnSair);
 
-txtSalario = new JTextField();
-txtSalario.setBounds(10, 235, 150, 30);
+		btnSair.addActionListener(new ActionListener() {
 
-//Botão Salvar
-btnSalvar = new JButton("Salvar");
-btnSalvar.setBounds(10, 300, 120, 50);
+			@Override
+			public void actionPerformed(ActionEvent e) {
 
-//Botão Sair
-btnSair = new JButton("Sair");
-btnSair.setBounds(140, 300, 80, 50);
+				int resposta = JOptionPane.showConfirmDialog(null, "Deseja continuar?", "Confirmação",
+						JOptionPane.YES_NO_OPTION);
+				if (resposta == 0) {
+					tela.dispose();
+				}
 
-painel.add(labelMatricula);
-painel.add(txtMatricula);
-painel.add(labelNome);
-painel.add(txtNome);
-painel.add(labelCargo);
-painel.add(txtCargo);
-painel.add(labelSalario);
-painel.add(txtSalario);
-painel.add(btnSalvar);
-painel.add(btnSair);
+			}
+		});
 
-btnSalvar.addActionListener(new ActionListener() {
+		btnSalvar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Funcionario f = new Funcionario(txtCargo.getText(), txtNome.getText(),
+							Double.parseDouble(txtSalario.getText()));
+					FuncionarioDAO dao = new FuncionarioDAO(f);
+					dao.gravar();
+					JOptionPane.showMessageDialog(tela, txtNome.getText() + " gravado com sucesso!", "Sucesso!",
+							JOptionPane.INFORMATION_MESSAGE);
+					limparFormulario();
+				} catch (Exception ex) {
+					JOptionPane.showMessageDialog(tela, "Ocorreu um erro: " + ex.getMessage(), "Erro",
+							JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
 
-@Override
-public void actionPerformed(ActionEvent e) {
-// TODO Auto-generated method stub
-String cargo = txtCargo.getText();
-String nome = txtNome.getText();
-double salario = Double.parseDouble(txtSalario.getText());
+		tela.setVisible(true);
+	}
 
-Funcionario f = new Funcionario(cargo, nome, salario);
-
-FuncionarioDAO dao = new FuncionarioDAO(f);
-dao.gravar();
-
-JOptionPane.showMessageDialog(tela,nome + "\ncadastrado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-limparFormulário();
-}
-});
-
-btnSair.addActionListener(new ActionListener() {
-
-@Override
-public void actionPerformed(ActionEvent e) {
-// TODO Auto-generated method stub
-
-int resposta = JOptionPane.showConfirmDialog(tela, "Você tem certeza que deseja sair do cadastro?");
-
-if (resposta == 0) {
-tela.dispose();
-}
-
-}
-});
-
-tela.setVisible(true);
-
-}
-
-public void limparFormulário() {
-txtNome.setText(null);
-txtNome.requestFocus();
-txtCargo.setText(null);
-txtSalario.setText(null);
-}
+	private void limparFormulario() {
+		txtNome.setText(null);
+		txtCargo.setText(null);
+		txtSalario.setText(null);
+		txtNome.requestFocus();
+	}
 
 }
