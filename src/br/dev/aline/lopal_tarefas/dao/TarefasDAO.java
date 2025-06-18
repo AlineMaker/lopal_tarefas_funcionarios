@@ -9,71 +9,68 @@ import java.util.List;
 import br.dev.aline.lopal_tarefas.factory.FileFactory;
 import br.dev.aline.lopal_tarefas.model.Tarefa;
 
-public class TarefasDAO {
-private Tarefa tarefa;
+public class tarefasDAO {
 
-public TarefasDAO() {
+	private Tarefa tarefa;
 
-}
+	public tarefasDAO() {
+	}
 
-public TarefasDAO(Tarefa tarefa) {
-this.tarefa = tarefa;
-}
+	public tarefasDAO(Tarefa tarefa) {
+		this.tarefa = tarefa;
+	}
 
-public void gravar() {
-try {
-FileFactory ff = new FileFactory();
-ff.getBufferedWriterTarefa().write(tarefa.toString());
-ff.getBufferedWriterTarefa().flush();
-System.out.println("Tarefa Cadastrada");
-} catch (IOException erro) {
-// TODO: handle exception
-erro.printStackTrace();
-}
-}
+	public void gravar() {
+		try {
+			FileFactory ff = new FileFactory();
+			ff.getBufferWriterTarefas().write(tarefa.toString());
+			ff.getBufferWriterTarefas().flush();
 
-public List<Tarefa> listar() {
-List<Tarefa> tarefas = new ArrayList<Tarefa>();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-try {
-FileFactory ff = new FileFactory();
-BufferedReader br = ff.getBufferedReaderTarefa();
+	}
 
-String linha = "";
+	public List<Tarefa> listar() {
 
-br.readLine();
+		List<Tarefa> tarefas = new ArrayList<Tarefa>();
 
-while (linha != null) {
-linha = br.readLine();
+		try {
+			FileFactory ff = new FileFactory();
+			BufferedReader br = ff.getBufferedReaderTarefas();
 
-if (linha != null) {
-// Criando o Vetor
-String[] tarefasStr = linha.split(",");
-String titulo = tarefasStr[0];
-String descricao = tarefasStr[1];
-String dataInicial = tarefasStr[2];
-int prazo = Integer.parseInt(tarefasStr[3]);
-String dataConclusao = tarefasStr[4];
-String status = tarefasStr[5];
-String responsavel = tarefasStr[6];
+			String linha = "";
 
-// Criando um objeto Tarefa
-Tarefa tarefa = new Tarefa();
-tarefa.setTituloTarefa(titulo);
-tarefa.setDescricaoTarefa(descricao);
-tarefa.setDataInicial(dataInicial);
-tarefa.setPrazoTarefa(prazo);
-tarefa.setStatusTarefa(status);
-tarefa.setResponsavelTarefa(responsavel);
+			br.readLine();
 
-// Adicionando Funcionários na lista
-tarefas.add(tarefa);
-}
-}
-return tarefas;
-} catch (IOException erro) {
-erro.printStackTrace();
-return null;
-}
-}
+			while (linha != null) {
+				// Extraíndo uma linha do arquivo
+				linha = br.readLine();
+				System.out.println(linha);
+
+				// Criando vetor que guarda cada informação antes da ","
+				if (linha != null) {
+					String TarefaStr[] = linha.split(",");
+
+					// Criando um objeto tarefa
+					Tarefa tarefa = new Tarefa();
+					tarefa.setCodigo(TarefaStr[0]);
+					tarefa.setTitulo(TarefaStr[1]);
+					tarefa.setResponsavel(TarefaStr[7]);
+
+					tarefas.add(tarefa);
+				}
+
+			}
+
+			return tarefas;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+
+	}
+
 }

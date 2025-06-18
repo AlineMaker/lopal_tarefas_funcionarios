@@ -5,59 +5,55 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Paths;
 
 public class FileFactory {
-private String arquivoFuncionario = "/Users/25132561/Documents/tarefasDS1TA/funcionarios.csv";
-private String arquivoTarefa = "/Users/25132561/Documents/tarefasDS1TA/tarefas.csv";
 
-//Funcionario
-private FileWriter fwf;
-private BufferedWriter bwf;
+	// utiliza o diretorio ja feito no repositorio, sem precisar mudar independente
+	// da maquina
+	private String arquivoFuncionarios = Paths.get("ArquivosGerenciador", "funcionarios.csv").toString();
+	private String arquivoTarefas = Paths.get("ArquivosGerenciador", "tarefas.csv").toString();
 
-private FileReader frf;
-private BufferedReader brf;
+	private FileWriter fwFuncionarios;
+	private BufferedWriter bwFuncionarios;
+	private FileReader frFuncionarios;
+	private BufferedReader brFuncionarios;
+	private FileWriter fwTarefas;
+	private BufferedWriter bwTarefas;
+	private FileReader frTarefas;
+	private BufferedReader brTarefas;
 
-//Tarefa
-private FileWriter fwt;
-private BufferedWriter bwt;
+	public FileFactory() throws IOException {
 
-private FileReader frt;
-private BufferedReader brt;
+		// É necessário para escrever no arquivo
+		fwFuncionarios = new FileWriter(arquivoFuncionarios, true);
+		bwFuncionarios = new BufferedWriter(fwFuncionarios);
 
+		fwTarefas = new FileWriter(arquivoTarefas, true);
+		bwTarefas = new BufferedWriter(fwTarefas);
 
-public FileFactory() throws IOException {
-//Necessário para escrever no arquivo
-fwf = new FileWriter(arquivoFuncionario, true);
-bwf = new BufferedWriter(fwf);
+		// É necessário para ler arquivo
+		frFuncionarios = new FileReader(arquivoFuncionarios);
+		brFuncionarios = new BufferedReader(frFuncionarios);
 
-//Necessário para ler o arquivo
-frf = new FileReader(arquivoFuncionario);
-brf = new BufferedReader(frf);
+		frTarefas = new FileReader(arquivoTarefas);
+		brTarefas = new BufferedReader(frTarefas);
+	}
 
-//Tarefas
-fwt = new FileWriter(arquivoTarefa, true);
-bwt = new BufferedWriter(fwt);
+	public BufferedWriter getBufferWriterFuncionarios() {
+		return bwFuncionarios;
+	}
 
-frt = new FileReader(arquivoTarefa);
-brt = new BufferedReader(frt);
-}
+	public BufferedWriter getBufferWriterTarefas() {
+		return bwTarefas;
+	}
 
-//Funcionario
-public BufferedWriter getBufferedWriterFuncionario() {
-return bwf;
-}
+	public BufferedReader getBufferedReaderFuncionarios() {
+		return brFuncionarios;
+	}
 
-public BufferedReader getBufferedReaderFuncionario() {
-return brf;
-}
-
-//Tarefa
-public BufferedWriter getBufferedWriterTarefa() {
-return bwt;
-}
-
-public BufferedReader getBufferedReaderTarefa() {
-return brt;
-}
+	public BufferedReader getBufferedReaderTarefas() {
+		return brTarefas;
+	}
 
 }

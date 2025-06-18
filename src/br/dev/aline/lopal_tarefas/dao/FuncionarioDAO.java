@@ -10,66 +10,79 @@ import br.dev.aline.lopal_tarefas.factory.FileFactory;
 import br.dev.aline.lopal_tarefas.model.Funcionario;
 
 public class FuncionarioDAO {
-private Funcionario funcionario;
+	private Funcionario funcionario;
 
-public FuncionarioDAO() {
+	public FuncionarioDAO() {
+		this.getNomesFuncionarios();
+	}
 
-}
+	public FuncionarioDAO(Funcionario funcionario) {
+		this.funcionario = funcionario;
+	}
 
-public FuncionarioDAO(Funcionario funcionario) {
-this.funcionario = funcionario;
-}
+	public void gravar() {
+		try {
+			FileFactory ff = new FileFactory();
+			ff.getBufferWriterFuncionarios().write(funcionario.toString());
+			ff.getBufferWriterFuncionarios().flush();
 
-public void gravar() {
-try {
-FileFactory ff = new FileFactory();
-ff.getBufferedWriterFuncionario().write(funcionario.toString());
-ff.getBufferedWriterFuncionario().flush();
-System.out.println("Funcionário gravado com sucesso!");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-} catch (IOException erro) {
-erro.printStackTrace();
-}
+	}
 
-}
+	public List<Funcionario> listar() {
 
-public List<Funcionario> listar() {
+		List<Funcionario> funcionarios = new ArrayList<Funcionario>();
 
-List<Funcionario> funcionarios = new ArrayList<Funcionario>();
+		try {
+			FileFactory ff = new FileFactory();
+			BufferedReader br = ff.getBufferedReaderFuncionarios();
 
-try {
-FileFactory ff = new FileFactory();
-BufferedReader br = ff.getBufferedReaderFuncionario();
+			String linha = "";
 
-String linha = "";
+			br.readLine();
 
-br.readLine();
+			while (linha != null) {
+				// Extraíndo uma linha do arquivo
+				linha = br.readLine();
+				System.out.println(linha);
 
-while (linha != null) {
-// Extraíndo uma linha do arquivo
-linha = br.readLine();
+				// Criando vetor que guarda cada informação antes da ","
+				if (linha != null) {
+					String funcionarioStr[] = linha.split(",");
 
-if (linha != null) {
-// Criando uma vetor
-String funcionarioStr[] = linha.split(",");
+					// Criando um objeto funcionario
+					Funcionario funcionario = new Funcionario();
+					funcionario.setMatricula(funcionarioStr[0]);
+					funcionario.setNome(funcionarioStr[1]);
+					funcionario.setCargo(funcionarioStr[2]);
+					funcionario.setSalario(Double.parseDouble(funcionarioStr[3]));
 
-// Criando um objeto funcionário
-Funcionario funcionario = new Funcionario();
-funcionario.setMatricula(funcionarioStr[0]);
-funcionario.setNome(funcionarioStr[1]);
-funcionario.setCargo(funcionarioStr[2]);
-double salario = Double.parseDouble(funcionarioStr[3]);
-funcionario.setSalario(salario);
+					funcionarios.add(funcionario);
+				}
 
-// Adicionando funcionários na lista
-funcionarios.add(funcionario);
-}
-}
+			}
 
-return funcionarios;
-} catch (Exception e) {
-e.printStackTrace();
-return null;
-}
-}
+			return funcionarios;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+
+	}
+
+	public String[] getNomesFuncionarios() {
+		List<Funcionario> funcionarios = listar(); // Reaproveita meu método para usar no combobox
+		String[] nomes = new String[funcionarios.size()];
+
+		for (int i = 0; i < funcionarios.size(); i++) {
+			nomes[i] = funcionarios.get(i).getNome();
+		}
+
+		return nomes;
+	}
+
 }

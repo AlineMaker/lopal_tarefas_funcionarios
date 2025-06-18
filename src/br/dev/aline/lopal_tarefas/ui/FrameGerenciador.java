@@ -8,52 +8,53 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 
 public class FrameGerenciador {
-private JButton btnFuncionarios;
-private JButton btnTarefas;
 
-public FrameGerenciador() {
-criarTela();
+	private JButton btnFuncionarios;
+	private JButton btnTarefas;
+
+	public FrameGerenciador() {
+		criarTela();
+	}
+
+	public void criarTela() {
+
+		JFrame tela = new JFrame();
+		tela.setSize(350, 150);
+		tela.setTitle("Gerenciador de Tarefas");
+		tela.setResizable(false);
+		tela.setLayout(null);
+		tela.setLocationRelativeTo(null);
+		tela.setVisible(true);
+
+		btnFuncionarios = new JButton("Funcionários");
+		btnFuncionarios.setBounds(30, 45, 120, 30);
+
+		btnTarefas = new JButton("Tarefas");
+		btnTarefas.setBounds(190, 45, 120, 30);
+		
+
+		Container painel = tela.getContentPane();
+		painel.add(btnFuncionarios);
+		painel.add(btnTarefas);
+
+		btnFuncionarios.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new FrameFuncionarioList(tela);
+
+			}
+		});
+
+		btnTarefas.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new FrameTarefasList(tela);
+
+			}
+		});
+
+	}
+
 }
-
-public void criarTela() {
-//Objeto da tela
-JFrame tela = new JFrame();
-tela.setSize(500, 200);
-tela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-tela.setLayout(null);
-tela.setLocationRelativeTo(null);
-tela.setTitle("Gerenciador de Tarefas");
-tela.setResizable(false);
-
-btnFuncionarios = new JButton("Funcionários");
-btnFuncionarios.setBounds(40, 40, 190, 70);
-
-btnFuncionarios.addActionListener(new ActionListener() {
-
-@Override
-public void actionPerformed(ActionEvent e) {
-// TODO Auto-generated method stub
-new FrameFuncionarioList(tela);
-}
-});
-
-btnTarefas = new JButton("Tarefas");
-btnTarefas.setBounds(240, 40, 190, 70);
-
-btnTarefas.addActionListener(new ActionListener() {
-
-@Override
-public void actionPerformed(ActionEvent e) {
-// TODO Auto-generated method stub
-new FrameTarefasList(tela);
-}
-});
-
-Container painel = tela.getContentPane();
-painel.add(btnFuncionarios);
-painel.add(btnTarefas);
-
-tela.setVisible(true);
-}
-}
-
